@@ -1,63 +1,68 @@
 <?php get_header(); ?>
 
-<div class="container">
+
+<div class="paginaHeader"></div>
+<div class="container-custom">
 	<div class="row">
+		<div class="col-xs-12 col-sm-9" role="main">
+			<div id="breadcrumb">
+				<?php
+				if ( function_exists( 'yoast_breadcrumb' ) ) {
+					yoast_breadcrumb();
+				}
+				?>
+			</div>
+			<div class="main-content">
+				<h1 class="mainTitle">Blog</h1>
 
-		<div class="col-xd-12 col-sm-8 col-md-8 col-lg-8" role="main">
+				<?php if ( have_posts() ) : ?>
+					<section>
+						<?php while ( have_posts() ) : the_post(); ?>
+							<article>
+								
+								<?php 
+								if ( has_post_thumbnail() ) { ?>
+								<a href="<?php echo the_permalink(); ?>">
+								<?php the_post_thumbnail('long-thumb'); ?>
+								</a>
+								<?php } ?> 			
+								
+								<a href="<?php echo the_permalink(); ?>">
+									<h3><?php  the_title() ?></h3>
+								</a>
+								<div class="post_meta">
+									<span class="date"><i class="fa fa-calendar"></i> <?php the_date(); ?> </span> | 
+									<span class="category"><i class="fa fa-folder"></i> <?php the_category(); ?></span> | 
+									<span class="auteur"><i class="fa fa-user"></i> <?php the_author(); ?> </span>
+								</div>
+								<div>
+									<?php the_excerpt(); ?>
+								</div>
+							</article>
+						<?php endwhile; ?>
 
-			<h1 class="mainTitle"><?php bloginfo( 'title' ); ?></h1>
+						<div>
+							<?php the_posts_pagination( ); ?>	
+						</div>
 
-			<?php the_content( ); ?>
+					</section>
 
-			<?php if ( have_posts() ) : ?>
-				<section>
-					<h2>Alle berichten</h2>
+				<?php else: ?>
 
-					<?php while ( have_posts() ) : the_post(); ?>
-						<article>
-							<a href="<?php echo the_permalink(); ?>"><h3><?php  the_title() ?></h3></a>
-							<div>
-								<?php the_excerpt(); ?>
-							</div>
-						</article>
-					<?php endwhile; ?>
+					geen resultaten...
 
-					<div>
-						<?php the_posts_pagination( ); ?>	
-					</div>
-
-				</section>
-			<?php else: ?>
-				geen resultaten...
-			<?php endif; ?>
-
+				<?php endif; ?>
+			</div>
 		</div>
 
-		<div class="hidden-xs col-sm-4 col-md-4 col-lg-4" role="complementary">
+		<div class="hidden-xs col-sm-3" role="complementary">
 			<?php get_template_part('sidebar'); ?>
 		</div>
-
-	</div>
-
-</div>
-
-<?php echo do_action('pageBlock', 25); ?>
-
-<?php echo do_action('pageBlock', 23); ?>
-
-
-<div class="pageBlock">
-	<div class="container">
-		<div class="row">
-			<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-				<?php echo do_action('pageBlockContent', 24); ?>
-			</div>
-
-			<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-				<?php echo do_action('pageBlockContent', 22); ?>
-			</div>
-		</div>
 	</div>
 </div>
+
+
+
 
 <?php get_footer(); ?>
+
